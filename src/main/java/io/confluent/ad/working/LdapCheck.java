@@ -34,7 +34,7 @@ public class LdapCheck {
         env.put(Context.REFERRAL, "ignore");
 // If you omit this property, the application will wait indefinitely.
         env.put("com.sun.jndi.ldap.connect.timeout", "300000000");
-        env.put(Context.PROVIDER_URL, "ldap://192.168.1.98:389");
+        env.put(Context.PROVIDER_URL, Config.LDAP_FULL_URL);
 //For password change use env.put(Context.PROVIDER_URL, "ldaps://adserver:636");
        // env.put(Context.SECURITY_PRINCIPAL, Config.USERNAME);
         env.put(Context.SECURITY_CREDENTIALS, Config.PASSWORD);
@@ -56,7 +56,7 @@ public class LdapCheck {
     String searchFilter = "cn=*";
 
 //Specify the Base for the search
-    searchBase = "cn=Users,dc=ad-test,dc=confluent,dc=io";
+    searchBase = Config.AD_SEARCH_BASE;
     //initialize counter to total the results
     int totalResults = 0;
     // Search for objects using the filter
@@ -65,11 +65,12 @@ public class LdapCheck {
 //  If connection is successful is prints the returned attributes
 while (answer.hasMoreElements())
     {
+        LOG.info("Result id: "+totalResults);
         SearchResult sr = answer.next();
         totalResults++;
-        LOG.info(">>>" + sr.getName());
+        LOG.info("CN: " + sr.getName());
         Attributes attrs = sr.getAttributes();
-        LOG.info("User is   :" + attrs.get("samAccountName"));
+        LOG.info("User: " + attrs.get("samAccountName"));
         LOG.info("Bad Password Count is     :" + attrs.get("badPwdCount"));
         LOG.info("Account Expires on    :" + attrs.get("accountExpires"));
         LOG.info("Password Never Expires    :" + attrs.get("userAccountControl"));

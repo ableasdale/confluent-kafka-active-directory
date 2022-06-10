@@ -21,4 +21,4 @@ What to do if you see an Exception `Caused by: javax.security.auth.login.LoginEx
 - https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/active-directory-functional-levels
 - https://anexinet.com/blog/the-time-zone-bug-in-windows-server-2019/
 - https://www.stigviewer.com/stig/windows_10/2017-04-28/finding/V-63795
-- 
+- https://docs.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-tools-and-settings

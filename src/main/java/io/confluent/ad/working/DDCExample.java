@@ -21,7 +21,7 @@ public class DDCExample {
         Endpoint endpoint = new Endpoint();
         endpoint.setSecuredConnection(false);
         endpoint.setPort(389);
-        endpoint.setHost("192.168.1.98");
+        endpoint.setHost(Config.IP_ADDR);
         endpoint.setPassword(Config.PASSWORD);
         //* Use the User's Distinguished Name for connection
         endpoint.setUserAccountName(Config.USERNAME+ Config.REALM);

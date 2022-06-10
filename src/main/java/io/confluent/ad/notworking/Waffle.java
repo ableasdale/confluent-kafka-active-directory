@@ -1,5 +1,6 @@
-package io.confluent.ad;
+package io.confluent.ad.notworking;
 
+import io.confluent.ad.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import waffle.windows.auth.IWindowsIdentity;

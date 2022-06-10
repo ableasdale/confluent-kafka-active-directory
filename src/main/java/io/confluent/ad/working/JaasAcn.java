@@ -1,7 +1,9 @@
 package io.confluent.ad.working;
 
 import javax.security.auth.login.*;
+
 import com.sun.security.auth.callback.TextCallbackHandler;
+import io.confluent.ad.Config;
 
 /**
  * This io.confluent.ad.working.JaasAcn application attempts to authenticate a user
@@ -11,15 +13,16 @@ public class JaasAcn {
 
     /**
      * java -Djava.security.krb5.realm=<your_realm>
-     *  -Djava.security.krb5.kdc=<your_kdc>
-     *  -Djava.security.auth.login.config=jaas.conf io.confluent.ad.working.JaasAcn
+     * -Djava.security.krb5.kdc=<your_kdc>
+     * -Djava.security.auth.login.config=jaas.conf io.confluent.ad.working.JaasAcn
+     *
      * @param args
      */
 
 
     public static void main(String[] args) {
         System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
-        System.setProperty("java.security.krb5.kdc", "192.168.1.98");
+        System.setProperty("java.security.krb5.kdc", Config.IP_ADDR);
         System.setProperty("java.security.auth.login.config", "src/main/resources/jaas.conf");
 
         // Obtain a LoginContext, needed for authentication. Tell
@@ -29,15 +32,12 @@ public class JaasAcn {
         // CallbackHandler.
         LoginContext lc = null;
         try {
-            lc = new LoginContext("JaasSample",
-                    new TextCallbackHandler());
+            lc = new LoginContext("JaasSample", new TextCallbackHandler());
         } catch (LoginException le) {
-            System.err.println("Cannot create LoginContext. "
-                    + le.getMessage());
+            System.err.println("Cannot create LoginContext. " + le.getMessage());
             System.exit(-1);
         } catch (SecurityException se) {
-            System.err.println("Cannot create LoginContext. "
-                    + se.getMessage());
+            System.err.println("Cannot create LoginContext. " + se.getMessage());
             System.exit(-1);
         }
 
@@ -49,7 +49,7 @@ public class JaasAcn {
         } catch (LoginException le) {
 
             System.err.println("Authentication failed: ");
-                    System.err.println("  " + le.getMessage());
+            System.err.println("  " + le.getMessage());
             System.exit(-1);
 
         }

@@ -22,19 +22,13 @@ public class MsLdapUtil2 {
     public void getAllUsers(String user, String password) {
 
         try {
-            String domainName = "confluent.io";
-            String serverName = "192.168.1.98:389";
-            String rootContext = "cn=Users,dc=ad-test,dc=confluent,dc=io";
-
-
-
+            String rootContext = Config.AD_SEARCH_BASE;
             //create an initial directory context
             Hashtable env = new Hashtable();
             env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-            env.put(Context.PROVIDER_URL, "ldap://" + serverName);
+            env.put(Context.PROVIDER_URL, Config.LDAP_FULL_URL);
 //      env.put(Context.SECURITY_AUTHENTICATION, "simple");
             env.put(Context.SECURITY_PRINCIPAL, Config.USERNAME+Config.REALM);
-           // env.put(Context.SECURITY_PRINCIPAL, Config.USERNAME);
             env.put(Context.SECURITY_CREDENTIALS, Config.PASSWORD);
 
             // Create the initial directory context

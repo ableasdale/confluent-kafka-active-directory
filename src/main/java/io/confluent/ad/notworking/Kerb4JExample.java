@@ -1,3 +1,5 @@
+package io.confluent.ad.notworking;
+
 import com.kerb4j.client.SpnegoClient;
 import com.kerb4j.client.SpnegoContext;
 import io.confluent.ad.Config;
@@ -26,11 +28,11 @@ public class Kerb4JExample {
         System.setProperty("java.security.debug", "gssloginconfig,configfile,configparser,logincontext");
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
 
-        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME, Config.PASSWORD);
+        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME+ Config.REALM, Config.PASSWORD);
         URL url = null;
         try {
             url = new URL("http://192.168.1.98:389");
-            SpnegoContext context = spnegoClient.createContext(new URL(String.format("http://192.168.1.98")));
+            SpnegoContext context = spnegoClient.createContext(new URL(Config.LDAP_FULL_URL));
             HttpURLConnection huc = (HttpURLConnection) url.openConnection();
             huc.setRequestProperty("Authorization", context.createTokenAsAuthroizationHeader());
             LOG.info("Response code: " + huc.getResponseCode());

@@ -1,3 +1,5 @@
+package io.confluent.ad.notworking;
+
 import io.confluent.ad.Config;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,14 +45,18 @@ public class HttpClientKerberosDoAS {
         System.setProperty("sun.security.krb5.debug", "true");
         System.setProperty("java.security.debug", "gssloginconfig,configfile,configparser,logincontext");
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
-        String url = String.format("http://192.168.1.98:389");
+
+        System.setProperty("sun.security.krb5.disableReferrals","true");
+        System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
+        System.setProperty("java.security.krb5.kdc", Config.IP_ADDR);
+        String url = Config.LDAP_FULL_URL;
         HttpClientKerberosDoAS kcd = new HttpClientKerberosDoAS();
         kcd.test(url);
     }
 
     private void test(final String url) {
         try {
-            LoginContext lc = new LoginContext("KrbLogin", new KerberosCallBackHandler(Config.USERNAME, Config.PASSWORD));
+            LoginContext lc = new LoginContext("KrbLogin", new KerberosCallBackHandler(Config.USERNAME+Config.REALM, Config.PASSWORD));
             lc.login();
             PrivilegedAction sendAction = () -> {
                 try {

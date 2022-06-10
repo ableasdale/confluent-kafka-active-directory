@@ -1,3 +1,5 @@
+package io.confluent.ad.notworking;
+
 import io.confluent.ad.Config;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,9 +34,10 @@ public class HttpClientKerberosDoAsTwo {
 
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
         System.setProperty("java.security.krb5.conf", "src/main/resources/krb5.conf");
-        //System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
-
-        String user = Config.USERNAME;
+        System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
+        System.setProperty("java.security.krb5.kdc", "192.168.1.98");
+        System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
+        String user = Config.USERNAME+Config.REALM;
         String password = Config.PASSWORD;
         String url = "ldap://192.168.1.98:389";
 
