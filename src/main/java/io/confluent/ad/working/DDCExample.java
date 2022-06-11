@@ -13,7 +13,9 @@ import java.util.Iterator;
 
 public class DDCExample {
 
-    // https://github.com/imperva/domain-directory-controller
+    /*
+     * See: https://github.com/imperva/domain-directory-controller
+     */
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -24,7 +26,7 @@ public class DDCExample {
         endpoint.setHost(Config.IP_ADDR);
         endpoint.setPassword(Config.PASSWORD);
         //* Use the User's Distinguished Name for connection
-        endpoint.setUserAccountName(Config.USERNAME+ Config.REALM);
+        endpoint.setUserAccountName(Config.USERNAME+Config.REALM);
 
 
         ConnectionResponse connectionResponse = DirectoryConnectorService.authenticate(endpoint);
@@ -35,7 +37,6 @@ public class DDCExample {
             Status value = connectionResponse.getStatuses().get(key);
             LOG.info(key + " :: " + value);
         }
-
         LOG.info("Successfully authenticated? "+ !connectionResponse.isError());
         //boolean succeeded = !connectionResponse.isError();
     }

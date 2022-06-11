@@ -12,7 +12,10 @@ public class Waffle {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    // Apparently Waffle only works on non-unix systems :(
+    /*
+     *  Apparently Waffle only works on non-unix systems :(
+     *  See: https://waffle.github.io/waffle/README.html
+     */
 
     public static void main(String[] args) {
         //waffle.windows.auth.impl.WindowsAuthProviderImpl

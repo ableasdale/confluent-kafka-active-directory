@@ -27,7 +27,7 @@ public class Ldap
         {
             DirContext context = new InitialDirContext(environment);
             LOG.info("Connected..");
-            LOG.info("E:"+context.getEnvironment());
+            LOG.info("Env: "+context.getEnvironment());
             context.close();
         }
         catch (AuthenticationNotSupportedException exception)

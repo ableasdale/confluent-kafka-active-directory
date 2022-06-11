@@ -17,7 +17,7 @@ import java.lang.invoke.MethodHandles;
  */
 public class ClientWinAuth {
 
-    // https://stackoverflow.com/questions/5804314/simple-kerberos-client-in-java
+    // See: https://stackoverflow.com/questions/5804314/simple-kerberos-client-in-java
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     public static void main(String[] args) throws Exception {
@@ -32,8 +32,14 @@ public class ClientWinAuth {
             LOG.warn("Integrated Win auth is not supported.");
         }
 
+        /* Note that the commented lines below won't work - there's a dependency:
+         * https://github.com/DovAmir/httpclientAuthHelper
+         * Unfortunately there isn't a package for this in Maven Central, see:
+         * https://github.com/DovAmir/httpclientAuthHelper/issues/1
+         */
+
         CloseableHttpClient httpclient = WinHttpClients.createDefault();
-        //AuthUtils.securityLogging(SecurityLogType.KERBEROS,true);
+       //AuthUtils.securityLogging(SecurityLogType.KERBEROS,true);
        //CredentialsUtils.setKerberosCredentials(httpclient, new UsernamePasswordCredentials("xxx", "xxx"), "domain", "kdc");
         //httpclient.executeMethod(httpget);
         // There is no need to provide user credentials

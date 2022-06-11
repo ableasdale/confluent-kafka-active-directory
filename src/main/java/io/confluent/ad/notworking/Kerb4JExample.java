@@ -24,14 +24,14 @@ public class Kerb4JExample {
 
        System.setProperty("java.security.krb5.conf", "src/main/resources/krb5.conf");
         System.setProperty("sun.security.krb5.debug", "true");
-        System.setProperty("javax.security.auth.useSubjectCredsOnly","false");
+        //System.setProperty("javax.security.auth.useSubjectCredsOnly","false");
         System.setProperty("java.security.debug", "gssloginconfig,configfile,configparser,logincontext");
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
 
-        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME+ Config.REALM, Config.PASSWORD);
+        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME+Config.REALM, Config.PASSWORD);
         URL url = null;
         try {
-            url = new URL("http://192.168.1.98:389");
+            url = new URL("http://www.google.com");
             SpnegoContext context = spnegoClient.createContext(new URL(Config.LDAP_FULL_URL));
             HttpURLConnection huc = (HttpURLConnection) url.openConnection();
             huc.setRequestProperty("Authorization", context.createTokenAsAuthroizationHeader());

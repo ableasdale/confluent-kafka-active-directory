@@ -32,6 +32,7 @@ dependencies {
     implementation 'net.java.dev.jna:jna:5.11.0'
     implementation 'net.java.dev.jna:jna-platform:5.11.0'
     implementation 'com.github.waffle:waffle-jna:3.1.1'
+    implementation 'commons-io:commons-io:2.11.0'
 }
 
 test {

@@ -18,6 +18,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
 import javax.security.auth.Subject;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.LoginContext;
@@ -33,23 +34,18 @@ public class HttpClientKerberosDoAsTwo {
     public static void main(String[] args) throws Exception {
 
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
-        System.setProperty("java.security.krb5.conf", "src/main/resources/krb5.conf");
-        System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
-        System.setProperty("java.security.krb5.kdc", "192.168.1.98");
+       // System.setProperty("java.security.krb5.conf", "src/main/resources/krb5.conf");
+       // System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
+        System.setProperty("java.security.krb5.kdc", Config.IP_ADDR);
         System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
-        String user = Config.USERNAME+Config.REALM;
+        String user = Config.USERNAME + Config.REALM;
         String password = Config.PASSWORD;
-        String url = "ldap://192.168.1.98:389";
+        String url = Config.LDAP_FULL_URL;
 
+        HttpClientKerberosDoAsTwo kcd = new HttpClientKerberosDoAsTwo();
 
-
-
-
-            HttpClientKerberosDoAsTwo kcd = new HttpClientKerberosDoAsTwo();
-
-            System.out.println("Loggin in with user [" + user + "] password [" + password + "] ");
-            kcd.test(user, password, url);
-
+        System.out.println("Loggin in with user [" + user + "] password [" + password + "] ");
+        kcd.test(user, password, url);
 
     }
 
@@ -114,7 +110,7 @@ public class HttpClientKerberosDoAsTwo {
         }
     }
 
-    private  HttpClient getHttpClient() {
+    private HttpClient getHttpClient() {
 
         Credentials use_jaas_creds = new Credentials() {
             public String getPassword() {
