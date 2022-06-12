@@ -28,11 +28,17 @@ public class Kerb4JExample {
         System.setProperty("java.security.debug", "gssloginconfig,configfile,configparser,logincontext");
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
 
-        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME+Config.REALM, Config.PASSWORD);
+        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME, Config.PASSWORD);
         URL url = null;
         try {
-            url = new URL("http://www.google.com");
-            SpnegoContext context = spnegoClient.createContext(new URL(Config.LDAP_FULL_URL));
+            url = new URL("http://www.example.com");
+            /* At the moment, I think this one doesn't really work because we're creating a context for
+             * something that doesn't really exist - looking through the output, it does look like the pre-auth
+             * does take place with the KDC - but the subsequent request to example.com seems to be where the
+             * failure happens (example.com has no understanding of the pre-auth context).
+             * I think this example could be made to work given a legitimate endpoint
+             */
+            SpnegoContext context = spnegoClient.createContext(url);
             HttpURLConnection huc = (HttpURLConnection) url.openConnection();
             huc.setRequestProperty("Authorization", context.createTokenAsAuthroizationHeader());
             LOG.info("Response code: " + huc.getResponseCode());

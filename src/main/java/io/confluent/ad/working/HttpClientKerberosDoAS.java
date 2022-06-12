@@ -1,4 +1,4 @@
-package io.confluent.ad.notworking;
+package io.confluent.ad.working;
 
 import io.confluent.ad.Config;
 import org.apache.http.HttpEntity;
@@ -49,14 +49,16 @@ public class HttpClientKerberosDoAS {
         System.setProperty("sun.security.krb5.disableReferrals","true");
         System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
         System.setProperty("java.security.krb5.kdc", Config.IP_ADDR);
-        String url = Config.LDAP_FULL_URL;
+        // Note here that the URL is where we plan to end up after approval from the AD Domain Controller.
+        // If you successfully authenticate, you should see HTML output from the GET call to www.example.com
+        String url = "http://www.example.com";
         HttpClientKerberosDoAS kcd = new HttpClientKerberosDoAS();
         kcd.test(url);
     }
 
     private void test(final String url) {
         try {
-            LoginContext lc = new LoginContext("KrbLogin", new KerberosCallBackHandler(Config.USERNAME+Config.REALM, Config.PASSWORD));
+            LoginContext lc = new LoginContext("KrbLogin", new KerberosCallBackHandler(Config.USERNAME, Config.PASSWORD));
             lc.login();
             PrivilegedAction sendAction = () -> {
                 try {

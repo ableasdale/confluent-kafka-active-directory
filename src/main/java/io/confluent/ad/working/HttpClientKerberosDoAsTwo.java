@@ -1,4 +1,4 @@
-package io.confluent.ad.notworking;
+package io.confluent.ad.working;
 
 import io.confluent.ad.Config;
 import org.apache.http.HttpEntity;
@@ -18,12 +18,15 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.security.AccessController;
 import java.security.Principal;
 import java.security.PrivilegedAction;
@@ -31,20 +34,20 @@ import java.util.Set;
 
 public class HttpClientKerberosDoAsTwo {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     public static void main(String[] args) throws Exception {
 
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
-       // System.setProperty("java.security.krb5.conf", "src/main/resources/krb5.conf");
-       // System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
         System.setProperty("java.security.krb5.kdc", Config.IP_ADDR);
         System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
-        String user = Config.USERNAME + Config.REALM;
+        String user = Config.USERNAME;
         String password = Config.PASSWORD;
-        String url = Config.LDAP_FULL_URL;
+        String url = "http://www.example.com";
 
         HttpClientKerberosDoAsTwo kcd = new HttpClientKerberosDoAsTwo();
 
-        System.out.println("Loggin in with user [" + user + "] password [" + password + "] ");
+        LOG.info("Logging in with user [" + user + "] password [" + password + "] ");
         kcd.test(user, password, url);
 
     }
