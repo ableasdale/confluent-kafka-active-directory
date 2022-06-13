@@ -28,7 +28,8 @@ public class Kerb4JExample {
         System.setProperty("java.security.debug", "gssloginconfig,configfile,configparser,logincontext");
         System.setProperty("java.security.auth.login.config", "src/main/resources/login.conf");
 
-        SpnegoClient spnegoClient = SpnegoClient.loginWithUsernamePassword(Config.USERNAME, Config.PASSWORD);
+        SpnegoClient spnegoClient = SpnegoClient.loginWithKeyTab("kafka/WIN-7F40HNU7OPJ@AD-TEST.CONFLUENT.IO", "src/main/resources/kafka.keytab");
+                //loginWithUsernamePassword(Config.USERNAME, Config.PASSWORD);
         URL url = null;
         try {
             url = new URL("http://www.example.com");
@@ -37,6 +38,18 @@ public class Kerb4JExample {
              * does take place with the KDC - but the subsequent request to example.com seems to be where the
              * failure happens (example.com has no understanding of the pre-auth context).
              * I think this example could be made to work given a legitimate endpoint
+             */
+            /* Update
+            Confirmed this is likely to be the problem:
+            >>>KRBError:
+                 sTime is Mon Jun 13 16:12:00 BST 2022 1655133120000
+                 suSec is 884952
+                 error code is 7
+                 error Message is Server not found in Kerberos database
+                 sname is HTTP/www.example.com@AD-TEST.CONFLUENT.IO
+
+	            In my case, there's no www.example.com in my domain, so the request is rejected.
+	            If this were a real resource in the domain, this process should work as expected.
              */
             SpnegoContext context = spnegoClient.createContext(url);
             HttpURLConnection huc = (HttpURLConnection) url.openConnection();
