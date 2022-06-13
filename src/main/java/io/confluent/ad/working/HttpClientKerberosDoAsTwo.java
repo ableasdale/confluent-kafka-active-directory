@@ -47,7 +47,7 @@ public class HttpClientKerberosDoAsTwo {
 
         HttpClientKerberosDoAsTwo kcd = new HttpClientKerberosDoAsTwo();
 
-        LOG.info("Logging in with user [" + user + "] password [" + password + "] ");
+        LOG.info("Logging in with user [" + user + "]");
         kcd.test(user, password, url);
 
     }
@@ -65,12 +65,12 @@ public class HttpClientKerberosDoAsTwo {
                     try {
 
                         Subject current = Subject.getSubject(AccessController.getContext());
-                        System.out.println("----------------------------------------");
+                        LOG.info("----------------------------------------");
                         Set<Principal> principals = current.getPrincipals();
                         for (Principal next : principals) {
-                            System.out.println("DOAS Principal: " + next.getName());
+                            LOG.info("Principal: " + next.getName());
                         }
-                        System.out.println("----------------------------------------");
+                        LOG.info("----------------------------------------");
 
                         call(url);
                     } catch (IOException e) {
@@ -96,15 +96,15 @@ public class HttpClientKerberosDoAsTwo {
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
 
-            System.out.println("----------------------------------------");
+            LOG.info("----------------------------------------");
 
-            System.out.println("STATUS >> " + response.getStatusLine());
+            LOG.info("STATUS >> " + response.getStatusLine());
 
             if (entity != null) {
-                System.out.println("RESULT >> " + EntityUtils.toString(entity));
+                LOG.info("RESULT >> " + EntityUtils.toString(entity));
             }
 
-            System.out.println("----------------------------------------");
+            LOG.info("----------------------------------------");
 
             EntityUtils.consume(entity);
 

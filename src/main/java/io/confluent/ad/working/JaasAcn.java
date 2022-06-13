@@ -4,6 +4,10 @@ import javax.security.auth.login.*;
 
 import com.sun.security.auth.callback.TextCallbackHandler;
 import io.confluent.ad.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * This io.confluent.ad.working.JaasAcn application attempts to authenticate a user
@@ -19,6 +23,7 @@ public class JaasAcn {
      * @param args
      */
 
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public static void main(String[] args) {
         System.setProperty("java.security.krb5.realm", "AD-TEST.CONFLUENT.IO");
@@ -34,27 +39,19 @@ public class JaasAcn {
         try {
             lc = new LoginContext("JaasSample", new TextCallbackHandler());
         } catch (LoginException le) {
-            System.err.println("Cannot create LoginContext. " + le.getMessage());
+            LOG.error("Cannot create LoginContext. " + le.getMessage());
             System.exit(-1);
         } catch (SecurityException se) {
-            System.err.println("Cannot create LoginContext. " + se.getMessage());
+            LOG.error("Cannot create LoginContext. " + se.getMessage());
             System.exit(-1);
         }
 
         try {
-
-            // attempt authentication
             lc.login();
-
         } catch (LoginException le) {
-
-            System.err.println("Authentication failed: ");
-            System.err.println("  " + le.getMessage());
+            LOG.error("Authentication failed: " + le.getMessage());
             System.exit(-1);
-
         }
-
-        System.out.println("Authentication succeeded!");
-
+        LOG.info("Authentication success...");
     }
 }
